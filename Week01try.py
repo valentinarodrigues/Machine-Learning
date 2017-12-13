@@ -10,6 +10,15 @@ def expand(X):
         Xnew[i][5]=1
     return Xnew
 
+X1 = np.array([[ 1.20798057,  0.0844994 ],[ 1.20798057,  0.0844994 ],
+               [ 1.20798057,  0.0844994 ],[ 1.20798057,  0.0844994 ],
+[ 1.20798057,  0.0844994 ],[ 1.20798057,  0.0844994 ],
+ [ 0.76121787,  0.72510869], [ 0.76121787,  0.72510869],
+ [ 0.55256189,  0.51937292]])
+y=np.array([1,1,1,1,1,1,1,1,1])
+w=np.linspace(-1, 1, 6)
+X = expand(X1)
+
 def probability(X, w):
     X_expanded = expand(X)
     wx=np.zeros((6))
@@ -19,16 +28,8 @@ def probability(X, w):
         p[i]=1/(1+np.exp(-wx1))
     return p
 
-X1 = np.array([[ 1.20798057,  0.0844994 ],[ 1.20798057,  0.0844994 ],
-               [ 1.20798057,  0.0844994 ],[ 1.20798057,  0.0844994 ],
-[ 1.20798057,  0.0844994 ],[ 1.20798057,  0.0844994 ],
- [ 0.76121787,  0.72510869], [ 0.76121787,  0.72510869],
- [ 0.55256189,  0.51937292]])
-y=np.array([1,1,1,1,1,1,1,1,1])
-w=np.linspace(-1, 1, 6)
-X = expand(X1)
-def compute_loss(X1, y, w):
 
+def compute_loss(X1, y, w):
     pi1=np.zeros((y.shape))
     pi2=np.zeros((y.shape))
     pi1=probability(X,w)
@@ -38,20 +39,28 @@ def compute_loss(X1, y, w):
     return l
 #print(compute_loss(X1, y, w))
 
+
 def compute_grad(X, y, w):
-    """
-    Given feature matrix X [n_samples,6], target vector [n_samples] of 1/0,
-    and weight vector w [6], compute vector [6] of derivatives of L over each weights.
-    """
+    i=np.dot(y-(probability(X, w)), X)/y.shape
+    return i
+print(compute_grad(X,y,w))
+
+"""
+def compute_grad(X, y, w):
+
 
     z = probability(X, w)
+    t=z-y
+    print(z-y)
     li=np.zeros(z.shape)
     lj=np.zeros(z.shape)
     for i,yi in enumerate(y):
         li[i]=z[i]-yi
-    l=np.dot(li,X)
+    #l=np.dot(li,X)
+    l=np.dot(t,X)   
     return l
     """
+"""
     Ls=compute_loss(X1, y, w)
     L=np.zeros((6))
     e=np.diff(L,w)
@@ -78,7 +87,7 @@ def compute_grad(X, y, w):
         w = w-gradient
     return w
 """
-print(compute_grad(X1,y,w))
+
 
 
 
